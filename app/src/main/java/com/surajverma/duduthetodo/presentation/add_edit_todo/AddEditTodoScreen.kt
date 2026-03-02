@@ -7,13 +7,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditTodoScreen(
     onNavigateBack: () -> Unit,
-    viewModel: AddEditTodoViewModel = hiltViewModel()
+    viewModel: AddEditTodoViewModel = koinViewModel()
 ) {
     val state = viewModel.state.value
 

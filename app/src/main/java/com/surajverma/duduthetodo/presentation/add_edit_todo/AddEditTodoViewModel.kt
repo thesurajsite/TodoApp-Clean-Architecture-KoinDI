@@ -9,12 +9,10 @@ import com.surajverma.duduthetodo.domain.model.Todo
 import com.surajverma.duduthetodo.domain.usecase.AddTodoUseCase
 import com.surajverma.duduthetodo.domain.usecase.GetTodoByIdUseCase
 import com.surajverma.duduthetodo.domain.usecase.UpdateTodoUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AddEditTodoViewModel @Inject constructor(
+
+class AddEditTodoViewModel (
     private val addTodoUseCase: AddTodoUseCase,
     private val updateTodoUseCase: UpdateTodoUseCase,
     private val getTodoByIdUseCase: GetTodoByIdUseCase,

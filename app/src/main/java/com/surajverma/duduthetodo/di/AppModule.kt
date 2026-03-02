@@ -1,6 +1,5 @@
 package com.surajverma.duduthetodo.di
 
-import android.app.Application
 import androidx.room.Room
 import com.surajverma.duduthetodo.data.local.database.TodoDatabase
 import com.surajverma.duduthetodo.data.repository.TodoRepositoryImpl
@@ -11,68 +10,50 @@ import com.surajverma.duduthetodo.domain.usecase.GetAllTodosUseCase
 import com.surajverma.duduthetodo.domain.usecase.GetTodoByIdUseCase
 import com.surajverma.duduthetodo.domain.usecase.ToggleTodoCompletionUseCase
 import com.surajverma.duduthetodo.domain.usecase.UpdateTodoUseCase
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import com.surajverma.duduthetodo.presentation.add_edit_todo.AddEditTodoViewModel
+import com.surajverma.duduthetodo.presentation.todo_list.TodoListViewModel
+import org.koin.android.ext.koin.androidApplication
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object AppModule {
+val appModule = module {
 
-    @Provides
-    @Singleton
-    fun provideTodoDatabase(app: Application): TodoDatabase {
-        return Room.databaseBuilder(
-            app,
+    // Database
+    single {
+        Room.databaseBuilder(
+            androidApplication(),
             TodoDatabase::class.java,
             TodoDatabase.DATABASE_NAME
         ).build()
     }
 
-    @Provides
-    @Singleton
-    fun provideTodoRepository(db: TodoDatabase): TodoRepository {
-        return TodoRepositoryImpl(db.todoDao())
+    // Repository
+    single<TodoRepository>{
+        TodoRepositoryImpl(get<TodoDatabase>().todoDao())
     }
 
-    @Provides
-    @Singleton
-    fun provideAddTodoUseCase(repository: TodoRepository): AddTodoUseCase {
-        return AddTodoUseCase(repository)
+    // ViewModel
+    viewModel {
+        TodoListViewModel(get(),
+            get(),
+            get()
+        )
     }
 
-    @Provides
-    @Singleton
-    fun provideDeleteTodoUseCase(repository: TodoRepository): DeleteTodoUseCase {
-        return DeleteTodoUseCase(repository)
+    viewModel {
+        AddEditTodoViewModel(
+            addTodoUseCase = get(),
+            updateTodoUseCase = get(),
+            getTodoByIdUseCase = get(),
+            savedStateHandle = get()
+        )
     }
 
-    @Provides
-    @Singleton
-    fun provideGetAllTodosUseCase(repository: TodoRepository): GetAllTodosUseCase {
-        return GetAllTodosUseCase(repository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideToggleTodoCompletionUseCase(repository: TodoRepository): ToggleTodoCompletionUseCase {
-        return ToggleTodoCompletionUseCase(repository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideUpdateTodoUseCase(repository: TodoRepository): UpdateTodoUseCase {
-        return UpdateTodoUseCase(repository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetTodoByIdUseCase(
-        repository: TodoRepository
-    ): GetTodoByIdUseCase {
-        return GetTodoByIdUseCase(repository)
-    }
-
+    // UseCases
+    single { AddTodoUseCase(get()) }
+    single { DeleteTodoUseCase(get()) }
+    single { GetAllTodosUseCase(get()) }
+    single { ToggleTodoCompletionUseCase(get()) }
+    single { UpdateTodoUseCase(get()) }
+    single { GetTodoByIdUseCase(get()) }
 }

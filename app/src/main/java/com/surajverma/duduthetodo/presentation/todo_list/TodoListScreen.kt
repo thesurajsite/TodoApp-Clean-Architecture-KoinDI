@@ -20,14 +20,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.surajverma.duduthetodo.presentation.todo_list.components.TodoItem
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoListScreen(
     onNavigateToAddEdit: (Int?) -> Unit,
-    viewModel: TodoListViewModel = hiltViewModel()
+    viewModel: TodoListViewModel = koinViewModel()
 ) {
     val state = viewModel.state.value
 

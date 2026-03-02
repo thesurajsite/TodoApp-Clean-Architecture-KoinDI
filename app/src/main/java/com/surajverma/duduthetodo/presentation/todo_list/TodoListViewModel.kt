@@ -8,15 +8,12 @@ import com.surajverma.duduthetodo.domain.model.Todo
 import com.surajverma.duduthetodo.domain.usecase.DeleteTodoUseCase
 import com.surajverma.duduthetodo.domain.usecase.GetAllTodosUseCase
 import com.surajverma.duduthetodo.domain.usecase.ToggleTodoCompletionUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class TodoListViewModel @Inject constructor(
+class TodoListViewModel (
     private val getAllTodosUseCase: GetAllTodosUseCase,
     private val deleteTodoUseCase: DeleteTodoUseCase,
     private val toggleTodoCompletionUseCase: ToggleTodoCompletionUseCase
